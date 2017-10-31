@@ -29,17 +29,7 @@ namespace Labb_6
             InitializeComponent();
 
             Bartender b = new Bartender();
-
-            //Action < T >  ??????
-
-
             int t = 0;
-
-            
-            
-
-            //Action<int> action = new Action<int>(PrintGuest);
-            //action("Hello!!!");
 
             lstbBartender.Items.Add("´Puben frågar bartender");
             //Task taskToBartender = new Task(new Action<int>(PrintGuest(t));  //   VARFÖR FUNKAR NEDANSTÅENDE TASK OCH INTE DENNA??
@@ -60,10 +50,6 @@ namespace Labb_6
            
         }
 
-        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
         
 
     }  //mainwindow class ends here
@@ -91,9 +77,7 @@ namespace Labb_6
 
         public void InviteGuest(Task fromPub)
         {
-            //Task t = fromPub;
-           fromPub.Start();
-           
+          fromPub.Start();
         }
 
     }
