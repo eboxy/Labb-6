@@ -15,7 +15,7 @@
         <Label x:Name="lblServitris" Content="Servitris" HorizontalAlignment="Left" Margin="150,20,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.125,-0.016" Foreground="#FFF11313" FontWeight="Bold" FontSize="16"/>
         <Label x:Name="lblGaster" Content="Gäster" HorizontalAlignment="Left" Margin="272,20,0,0" VerticalAlignment="Top" Foreground="#FFF11313" FontWeight="Bold" FontSize="16"/>
         <ListBox x:Name="lstbBartender" HorizontalAlignment="Left" Height="100" Margin="20,51,0,0" VerticalAlignment="Top" Width="100"/>
-        <ListBox x:Name="lstbServitris" HorizontalAlignment="Left" Height="100" Margin="150,51,0,0" VerticalAlignment="Top" Width="100" SelectionChanged="ListBox_SelectionChanged"/>
+        <ListBox x:Name="lstbServitris" HorizontalAlignment="Left" Height="100" Margin="150,51,0,0" VerticalAlignment="Top" Width="100"/>
         <ListBox x:Name="lstbGaster" HorizontalAlignment="Left" Height="100" Margin="272,51,0,0" VerticalAlignment="Top" Width="150"/>
         <Button x:Name="btnBartender" Content="Pausa/fortsätt" HorizontalAlignment="Left" Margin="30,165,0,0" VerticalAlignment="Top" Width="90" RenderTransformOrigin="0.496,0.25" Grid.RowSpan="2" Background="#FFCBCBCB" Foreground="#FFDA2525"/>
         <Button x:Name="btnServitris" Content="Pausa/fortsätt" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Margin="150,165,0,0" Grid.RowSpan="2" Background="#FFCBCBCB" Foreground="#FFDA2525"/>
