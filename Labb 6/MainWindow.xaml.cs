@@ -74,9 +74,7 @@ namespace Labb_6
                     Dispatcher.Invoke(() =>
                     {
                         int r = timeRandom.Next(_theNames.Count);
-                        lstbGaster.Items.Add((timeStamp) + " " +_theNames.ElementAt(r) + " kommer in i baren.");
-
-
+                        lstbGaster.Items.Insert(0,timeStamp + " " +_theNames.ElementAt(r) + " kommer in i baren.");
                     });
                 }
             });
