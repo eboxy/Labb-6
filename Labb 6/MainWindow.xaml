@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Labb_6"
         mc:Ignorable="d"
-        Title="MainWindow" Height="311" Width="650">
-    <Grid x:Name="wdwMainWindow" Margin="0" Height="550" Width="650" Background="#FF79968D">
+        Title="MainWindow" Height="311" Width="676">
+    <Grid x:Name="wdwMainWindow" Margin="0,0,-66,-270" Height="550" Background="#FF79968D">
         <Grid.RowDefinitions>
             <RowDefinition Height="18*"/>
             <RowDefinition Height="37*"/>
@@ -16,15 +16,17 @@
         <Label x:Name="lblGaster" Content="Gäster" HorizontalAlignment="Left" Margin="272,20,0,0" VerticalAlignment="Top" Foreground="#FFF11313" FontWeight="Bold" FontSize="16"/>
         <ListBox x:Name="lstbBartender" HorizontalAlignment="Left" Height="100" Margin="20,51,0,0" VerticalAlignment="Top" Width="100"/>
         <ListBox x:Name="lstbServitris" HorizontalAlignment="Left" Height="100" Margin="150,51,0,0" VerticalAlignment="Top" Width="100"/>
-        <ListBox x:Name="lstbGaster" HorizontalAlignment="Left" Height="100" Margin="272,51,0,0" VerticalAlignment="Top" Width="150"/>
+        <ListBox x:Name="lstbGaster" HorizontalAlignment="Left" Height="100" Margin="272,51,0,0" VerticalAlignment="Top" Width="215"/>
         <Button x:Name="btnBartender" Content="Pausa/fortsätt" HorizontalAlignment="Left" Margin="30,165,0,0" VerticalAlignment="Top" Width="90" RenderTransformOrigin="0.496,0.25" Grid.RowSpan="2" Background="#FFCBCBCB" Foreground="#FFDA2525"/>
         <Button x:Name="btnServitris" Content="Pausa/fortsätt" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Margin="150,165,0,0" Grid.RowSpan="2" Background="#FFCBCBCB" Foreground="#FFDA2525"/>
-        <Button x:Name="btnGaster" Content="Pausa/fortsätt" HorizontalAlignment="Left" Margin="272,165,0,0" VerticalAlignment="Top" Width="150" Grid.RowSpan="2" Background="#FFCBCBCB" Foreground="#FFDA2525"/>
+        <Button x:Name="btnGaster" Content="Pausa/fortsätt" HorizontalAlignment="Left" Margin="272,165,0,0" VerticalAlignment="Top" Width="215" Grid.RowSpan="2" Background="#FFCBCBCB" Foreground="#FFDA2525"/>
         <Button x:Name="btnOpenCloseBar" Content="Öppna/stäng baren" HorizontalAlignment="Left" Margin="30,25,0,0" VerticalAlignment="Top" Width="392" Height="30" Grid.Row="1" Background="#FFCBCBCB" Foreground="#FFDA2525"/>
-        <Label x:Name="lblAntalGasterIBaren" Content="Antal gäster i bar" HorizontalAlignment="Left" Margin="445,51,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.26,0.539" Width="140" Height="24" FontWeight="Bold"/>
-        <Label x:Name="lblAntalGlasIHylla" Content="Antal glas i hyllan" HorizontalAlignment="Left" Margin="445,80,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.26,0.539" Width="140" Height="30" FontWeight="Bold"/>
-        <Label x:Name="lblAntalLedigaBord" Content="Antal lediga stolar" HorizontalAlignment="Left" Margin="445,110,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.251,0.2" Width="140" Height="30" FontWeight="Bold"/>
+
+        <Label x:Name="lblAntalGasterIBaren" Content="Antal gäster i bar" HorizontalAlignment="Left" Margin="529,56,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.26,0.539" Width="140" Height="24" FontWeight="Bold"/>
+        <Label x:Name="lblAntalGlasIHylla" Content="Antal glas i hyllan" HorizontalAlignment="Left" Margin="529,80,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.26,0.539" Width="140" Height="30" FontWeight="Bold"/>
+        <Label x:Name="lblAntalLedigaBord" Content="Antal lediga stolar" HorizontalAlignment="Left" Margin="529,110,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.251,0.2" Width="140" Height="30" FontWeight="Bold"/>
         <Button x:Name="btnPanic" Content="PANIK! STOPPA ALLA TRÅDAR!!" HorizontalAlignment="Left" Margin="445,165,0,0" VerticalAlignment="Top" Width="185" Height="70" Grid.RowSpan="2" Background="#FFEB1F1F" Foreground="#FFF1EFEF" FontWeight="Bold"/>
+
 
     </Grid>
 </Window>

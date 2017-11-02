@@ -1,0 +1,57 @@
+Labb6__kod för events och delegates
+....................................
+
+i main:
+
+c.Roar += OnRoar;   //OBS MÅSTE VARA I DEN HÄR ORDNINGEN!!
+c.OnRoaring();      //OBS MÅSTE VARA I DEN HÄR ORDNINGEN!!
+c.Run += OnRunning;
+c.OnTheRun();
+
+
+.......................................
+
+
+prenumerations-metoder:
+
+
+public static void OnRoar()
+{
+    Console.WriteLine("the cougar roared!");
+}
+
+public static void OnRunning()
+{
+     Console.WriteLine("the cougar has been running!");
+}
+
+
+.......................................
+
+
+Klass med events:
+
+
+public class Cougar
+    {
+        public event Action Run, Roar;
+
+        public void OnTheRun()
+        {
+            Console.WriteLine("the cougar runs");
+            if(Run != null)   //kollar om Run är null. avancerad form:  Run?.Invoke();
+            Run();
+        }
+
+        public void OnRoaring()
+        {
+            Console.WriteLine("the cougar roars");
+            if(Roar != null)   //kollar om Run är null. avancerad form:  Roar?.Invoke();
+            Roar();
+
+        }
+
+
+    }
+
+
