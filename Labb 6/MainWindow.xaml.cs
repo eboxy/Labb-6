@@ -61,7 +61,6 @@ namespace Labb_6
             _theNames.Add("Zetta");
             _theNames.Add("Zina");
 
-
             Task t1 = Task.Run(() =>
             {
                 //int actionCount = 0; 
