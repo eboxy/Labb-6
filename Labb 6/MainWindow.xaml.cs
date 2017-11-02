@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,12 +18,9 @@ using System.Windows.Shapes;
 
 namespace Labb_6
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+
     public partial class MainWindow : Window
     {
-        public delegate void ShowValue();
 
         public static String GetTimestamp(DateTime value)
         {
@@ -31,9 +29,7 @@ namespace Labb_6
         }
 
         List<string>_theNames = new List<string>();
-        
-        
-        
+       
         public MainWindow()
         {
             InitializeComponent();
@@ -41,9 +37,27 @@ namespace Labb_6
             InviteGuest();
         }
 
-        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+
+            Bartender b = new Bartender();
+            int t = 0;
+
+            lstbBartender.Items.Add("´Puben frågar bartender");
+            //Task taskToBartender = new Task(new Action<int>(PrintGuest(t));  //   VARFÖR FUNKAR NEDANSTÅENDE TASK OCH INTE DENNA??
+
+            Task taskToBartender = new Task(() => PrintGuest(t));
+            b.InviteGuest(taskToBartender);
+
+            
+        }  //mainwindow-method ends here!!!
+
+        public void PrintGuest(int numOfGuests)
         {
 
+            Dispatcher.Invoke(() =>
+            {
+                lstbBartender.Items.Add("Svar från bartender " + numOfGuests);
+            });
+           
         }
 
         public void InviteGuest()
@@ -79,10 +93,8 @@ namespace Labb_6
             });
 
         }
-        static void Display(string message)
-        {
-            Console.WriteLine("Hej");
-        }
+     
+
 
     }  //mainwindow class ends here
 
@@ -95,22 +107,33 @@ namespace Labb_6
     public class Bouncer
     {
         
-    }
+        
+   }
 
     public class Patron
     {
-        
+        //utskrifts-callback till motsvarande listbox
+
+
+
     }
 
 
     public class Bartender
     {
-        
+        //utskrifts-callback till motsvarande listbox
+
+        public void InviteGuest(Task fromPub)
+        {
+          fromPub.Start();
+        }
 
     }
 
     public class Waiter
     {
+        //utskrifts-callback till motsvarande listbox
+
         
     }
 

@@ -21,10 +21,12 @@
         <Button x:Name="btnServitris" Content="Pausa/fortsätt" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Margin="150,165,0,0" Grid.RowSpan="2" Background="#FFCBCBCB" Foreground="#FFDA2525"/>
         <Button x:Name="btnGaster" Content="Pausa/fortsätt" HorizontalAlignment="Left" Margin="272,165,0,0" VerticalAlignment="Top" Width="215" Grid.RowSpan="2" Background="#FFCBCBCB" Foreground="#FFDA2525"/>
         <Button x:Name="btnOpenCloseBar" Content="Öppna/stäng baren" HorizontalAlignment="Left" Margin="30,25,0,0" VerticalAlignment="Top" Width="392" Height="30" Grid.Row="1" Background="#FFCBCBCB" Foreground="#FFDA2525"/>
-        <Label x:Name="lblAntalGasterIBaren" Content="Antal gäster i bar" HorizontalAlignment="Left" Margin="513,53,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.26,0.539" Width="140" Height="24" FontWeight="Bold"/>
-        <Label x:Name="lblAntalGlasIHylla" Content="Antal glas i hyllan" HorizontalAlignment="Left" Margin="513,82,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.26,0.539" Width="140" Height="30" FontWeight="Bold"/>
-        <Label x:Name="lblAntalLedigaBord" Content="Antal lediga bord" HorizontalAlignment="Left" Margin="513,112,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.251,0.2" Width="140" Height="30" FontWeight="Bold"/>
-        <Button x:Name="btnPanic" Content="PANIK! STOPPA ALLA TRÅDAR!!" HorizontalAlignment="Left" Margin="513,165,0,0" VerticalAlignment="Top" Width="185" Height="70" Grid.RowSpan="2" Background="#FFEB1F1F" Foreground="#FFF1EFEF" FontWeight="Bold"/>
+
+        <Label x:Name="lblAntalGasterIBaren" Content="Antal gäster i bar" HorizontalAlignment="Left" Margin="445,51,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.26,0.539" Width="140" Height="24" FontWeight="Bold"/>
+        <Label x:Name="lblAntalGlasIHylla" Content="Antal glas i hyllan" HorizontalAlignment="Left" Margin="445,80,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.26,0.539" Width="140" Height="30" FontWeight="Bold"/>
+        <Label x:Name="lblAntalLedigaBord" Content="Antal lediga stolar" HorizontalAlignment="Left" Margin="445,110,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.251,0.2" Width="140" Height="30" FontWeight="Bold"/>
+        <Button x:Name="btnPanic" Content="PANIK! STOPPA ALLA TRÅDAR!!" HorizontalAlignment="Left" Margin="445,165,0,0" VerticalAlignment="Top" Width="185" Height="70" Grid.RowSpan="2" Background="#FFEB1F1F" Foreground="#FFF1EFEF" FontWeight="Bold"/>
+
 
     </Grid>
 </Window>
