@@ -35,8 +35,8 @@ namespace Labb_6
             InitializeComponent();
 
             InviteGuest();
-        }
-
+        
+        
 
             Bartender b = new Bartender();
             int t = 0;
