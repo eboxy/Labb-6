@@ -34,43 +34,107 @@ namespace Labb_6
         {
             InitializeComponent();
 
-            InviteGuest();
-        
-        
+           
 
+
+            //Agenter
+            Bouncer bounce = new Bouncer();
             Bartender b = new Bartender();
-
-            b.PourBeer += WaitingForGuest;
-            b.PourBeer += OnBeer;
-            b.PourBeer += GastDrinksBeer;
-            b.PouringBeer();
+            Guest g = new Guest();
+            Waiter w = new Waiter();
 
 
+            b.VantaiBar += Bartender_VantaIBaren;
+            b.VantaiBarMetod();   //Skippa dessa metoder??  känns onödiga!!
 
-            //int t = 0;
 
-            lstbBartender.Items.Add("´Puben frågar bartender");
-            //Task taskToBartender = new Task(new Action<int>(PrintGuest(t));  //   VARFÖR FUNKAR NEDANSTÅENDE TASK OCH INTE DENNA??
 
-            //Task taskToBartender = new Task(() => PrintGuest(t));
-            //b.InviteGuest(taskToBartender);
 
-            
-            
+
+
+
 
         }  //mainwindow-method ends here!!!
 
-        //public void PrintGuest(int numOfGuests)
-        //{ Dispatcher.Invoke(() => { lstbBartender.Items.Add("Svar från bartender " + numOfGuests);});}
 
-        public void GastDrinksBeer()
-        { Dispatcher.Invoke(() => { lstbGaster.Items.Add(3 + "_Gästen dricker upp ölen"); }); }
+        //Slaskdemo-metod för start av baren....bättre sätt att göra det här senare!!!
+        public void StartBar()
+        {
+            //Agenter
+            Bouncer bounce = new Bouncer();
+            Bartender b = new Bartender();
+            Guest g = new Guest();
+            Waiter w = new Waiter();
 
-        public void OnBeer()
-        { Dispatcher.Invoke(() => { lstbBartender.Items.Add(2 + "_Har hällt bärs här hela dan "); }); }
 
-        public void WaitingForGuest()
-        { Dispatcher.Invoke(() => { lstbBartender.Items.Add(1 + "_Väntar på gästen "); }); }
+            //Slask-demo för events och prennumeration etc.
+            b.BarenOppnas += Bartender_BarenOppnas;
+            b.BarenOppnas += Guest_BarenOppnas;
+            b.BarenOppnas += Waiter_BarenOppnas;
+
+            b.Bartender_BarenOppnasMetod();
+            g.Guest_BarenOppnasMetod();
+            w.Waiter_BarenOppnasMetod();
+
+        }
+        
+        
+        
+        
+        //Utskrifts-metoder för Bartender    
+        public void Bartender_BarenOppnas()
+        { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbBartender.Items.Add(timeStamp + "_Baren öppnas!!"); }); }
+
+        public void Bartender_VantaIBaren()
+        { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbBartender.Items.Add(timeStamp + "_Väntar i baren"); }); }
+
+        public void Bartender_PlockaGlasFranHyllan()
+        { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbBartender.Items.Add(timeStamp + "_Plockar fram glas från hyllan'"); }); }
+
+        public void Bartender_HallaUppOl()
+        { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbBartender.Items.Add(timeStamp + "_Häller upp öl till kund"); }); }
+
+        public void Bartender_GarHem()
+        { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbBartender.Items.Add(timeStamp + "_Går hem!!"); }); }
+
+
+        //Utskrifts-metoder för Waiter
+        public void Waiter_BarenOppnas()
+        { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbServitor.Items.Add(timeStamp + "_Baren öppnas!!"); }); }
+
+        public void Waiter_PlockaTommaGlas()
+        { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbServitor.Items.Add(timeStamp + "_Plockar upp tomma glas'"); }); }
+
+        public void Waiter_DiskarGlas()
+        { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbServitor.Items.Add(timeStamp + "_Diskar glas"); }); }
+
+        public void Waiter_StallerGlasIHyllan()
+        { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbServitor.Items.Add(timeStamp + "_Ställer glas i hyllan"); }); }
+
+        //Utskrifts-metoder för Bouncer
+        public void Bouncer_GarDirektHem()
+        { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbGaster.Items.Add(timeStamp + "_GarDirektHem"); }); }
+
+        //Utskrifts-metoder för Guest
+        public void Guest_BarenOppnas()
+        { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbGaster.Items.Add(timeStamp + "_Baren öppnas!!"); }); }
+
+        public void Guest_KommerInIPub()
+        { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbGaster.Items.Add(timeStamp + "_Kommer in i puben"); }); }
+
+        public void Guest_LetarEfterLedigStrol()
+        { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbGaster.Items.Add(timeStamp + "_Letar efter ledig stol"); }); }
+
+        public void Guest_SattSigNer()
+        { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbGaster.Items.Add(timeStamp + "_Sätter sig ned på stol"); }); }
+
+        public void Guest_DrickerOlGarHem()
+        { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbGaster.Items.Add(timeStamp + "_Dricker ur ölen och går hem!!"); }); }
+
+
+        //hade en version förut där man bara skicka ett värde men då blev det massa text i anropen och rördigt när metoderna skulle prenumerera på en händelse samt metoderna fick ja ha ett generiskt namn för aktuell agent. så blir fulare å klumpigare här bland utskrifterna men tror det blirn bättre sedan vid anropen etc.  något att tänka på men gör så här så länge. annars är det ju ett solklart fall av att brya ner i metod!!!
+
+
 
 
         public void InviteGuest()
@@ -106,66 +170,116 @@ namespace Labb_6
             });
 
         }
-     
+
+        private void btnOpenCloseBar_Click(object sender, RoutedEventArgs e)
+        {
+
+           StartBar();
+           InviteGuest();
+            
+            
+
+
+        }
+
+
 
 
     }  //mainwindow class ends here
 
-    
-   
+
+
 
 
     // OTHER CLASSES HERE:
 
     public class Bouncer
     {
-        
-        
-   }
+        public event Action GaDirektHem;
 
-    public class Patron
+        public void DoSomethingMethodBouncer()
+        { Task.Run(() => { GaDirektHem?.Invoke(); }); }
+
+
+    }
+
+
+
+    public class Guest
     {
+
+       public event Action KommerInIPub, LetarLedigStol, SatterSigNed, DrickaOlLamnaBar, BarenOppnas;
+
+        public void Guest_BarenOppnasMetod()
+        { Task.Run(() => { BarenOppnas?.Invoke(); }); }
+
+        public void KommerInIPubMetod()
+        { Task.Run(() => { KommerInIPub?.Invoke(); }); }
+
+        public void LetarLedigStolMetod()
+        { Task.Run(() => { LetarLedigStol?.Invoke(); }); }
+
+        public void SatterSigNedMetod()
+        { Task.Run(() => { SatterSigNed?.Invoke(); }); }
+
+        public void DrickaOlLamnaBarMetod()
+        { Task.Run(() => { DrickaOlLamnaBar?.Invoke(); }); }
+
         //utskrifts-callback till motsvarande listbox
-
-
-
     }
 
 
     public class Bartender
     {
         //utskrifts-callback till motsvarande listbox
-
+    
         //public event Action Run, Roar; 
 
-        public event Action PourBeer;
+        public event Action VantaiBar, PlockaGlasFranHylla, HallaUppOl, BartenderGarHem, BarenOppnas;
+
+        public void Bartender_BarenOppnasMetod()
+        { Task.Run(() => { BarenOppnas?.Invoke(); }); }
+
+        public void VantaiBarMetod()
+        { Task.Run(() => { VantaiBar?.Invoke(); }); }
+
+        public void PlockaGlasFranHyllaMetod()
+        { Task.Run(() => { PlockaGlasFranHylla?.Invoke(); }); }
+
+        public void HallaUppOlMetod()
+        { Task.Run(() => { HallaUppOl?.Invoke(); }); }
+
+        public void BartenderGarHemMetod()
+        { Task.Run(() => { BartenderGarHem?.Invoke(); }); }
 
 
-        public void PouringBeer()
-        {
 
-            Task.Run(() =>
-            {
-                PourBeer?.Invoke();
+        //ingen task, metod som anropar häll upp öl osv. task i main dock!! (dave)  SKALL VI BAARA EN LR NÅGRA TASKS I MIAN DÅ OCH FRÅN DEN/DEMStrANROPA METODER                                                                           I KLASSER ETC???  JAG HAR DOCK GJORT  LITE TRÅDAR I VARJE KLASS. FÅR VÄL                                                                              ÄNDRA PÅ DET SEDAN ISF??
 
-            });
-
-            //ingen task, metod som anropar häll upp öl osv. task i main dock!! (dave)
-
-        }
-
-        //public void InviteGuest(Task fromPub)
-        //{
-        //  fromPub.Start();
-        //}
 
     }
 
+
+
+
     public class Waiter
     {
-        //utskrifts-callback till motsvarande listbox
 
-        
+        public event Action PlockarTommaGlas, DiskarGlas, StallarGlasIHylla, BarenOppnas;
+
+        public void Waiter_BarenOppnasMetod()
+        { Task.Run(() => { BarenOppnas?.Invoke(); }); }
+
+        public void PlockarTommaGlasMetod()
+        { Task.Run(() => { PlockarTommaGlas?.Invoke(); }); }
+
+        public void DiskarGlasMetod()
+        { Task.Run(() => { DiskarGlas?.Invoke(); }); }
+
+        public void StallarGlasIHyllaMetod()
+        { Task.Run(() => { StallarGlasIHylla?.Invoke(); }); }
+
+        //utskrifts-callback till motsvarande listbox
     }
 
     
