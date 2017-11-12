@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
@@ -15,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Labb_6
 {
@@ -29,61 +32,149 @@ namespace Labb_6
         }
 
         List<string>_theNames = new List<string>();
+
        
+
         public MainWindow()
         {
             InitializeComponent();
 
-           
-
-
-            //Agenter
-            Bouncer bounce = new Bouncer();
-            Bartender b = new Bartender();
-            Guest g = new Guest();
-            Waiter w = new Waiter();
-
-
-            b.VantaiBar += Bartender_VantaIBaren;
-            b.VantaiBarMetod();   //Skippa dessa metoder??  känns onödiga!!
-
-
-
-
-
-
-
-
         }  //mainwindow-method ends here!!!
 
+        //bool för att öpnna och stänga bar
+        bool barOpen;
 
-        //Slaskdemo-metod för start av baren....bättre sätt att göra det här senare!!!
-        public void StartBar()
+        //Agenter
+        Bouncer bounce = new Bouncer();
+        Bartender b = new Bartender();
+        Guest g = new Guest();
+        Waiter w = new Waiter();
+
+
+
+        
+        public void TheBar()
         {
-            //Agenter
-            Bouncer bounce = new Bouncer();
-            Bartender b = new Bartender();
-            Guest g = new Guest();
-            Waiter w = new Waiter();
+            //Events och prenumerationer
 
-
-            //Slask-demo för events och prennumeration etc.
+            //Baren öpnnas events och prenumerationer
             b.BarenOppnas += Bartender_BarenOppnas;
             b.BarenOppnas += Guest_BarenOppnas;
             b.BarenOppnas += Waiter_BarenOppnas;
 
-            b.Bartender_BarenOppnasMetod();
-            g.Guest_BarenOppnasMetod();
-            w.Waiter_BarenOppnasMetod();
+            //Baren stängs events och prenumerationer
+            b.BarenStangs += Bartender_BarenStangs;
+            b.BarenStangs += Guest_BarenStrangs;
+            b.BarenStangs += Waiter_BarenStangs;
 
-        }
-        
-        
-        
-        
-        //Utskrifts-metoder för Bartender    
+
+
+            //Bouncer events och prenumerationer
+            bounce.GaDirektHem += Bouncer_GarDirektHem;
+
+            //Guest events och prunumerationer
+            g.KommerInIPub += Guest_KommerInIPub;
+            g.LetarLedigStol += Guest_LetarEfterLedigStrol;
+            g.SatterSigNed += Guest_SattSigNer;
+            g.DrickaOlLamnaBar += Guest_DrickerOlGarHem;
+
+            //Bartender evetns och prenumerationer
+            b.VantaiBar += Bartender_VantaIBaren;
+            b.PlockaGlasFranHylla += Bartender_PlockaGlasFranHyllan;
+            b.HallaUppOl += Bartender_HallaUppOl;
+            b.BartenderGarHem += Bartender_GarHem;
+
+            //Waiter events och prenumerationer
+            w.PlockarTommaGlas += Waiter_PlockaTommaGlas;
+            w.DiskarGlas += Waiter_DiskarGlas;
+            w.StallarGlasIHylla += Waiter_StallerGlasIHyllan;
+
+
+
+            //Tasks
+
+            //Task_Bar öppnas och stängs
+            Task.Run(() =>
+            {
+
+                if (barOpen)
+                {
+                    b.Bartender_BarenOppnasMetod();
+                    g.Guest_BarenOppnasMetod();
+                    w.Waiter_BarenOppnasMetod();
+                     
+                      
+                }
+                else if (barOpen == false)
+                {
+
+                    b.Bartender_BarenStangsMetod();
+                    g.Guest_BarenStangsMetod();
+                    w.Waiter_BarenStangsMetod();
+                }
+
+            });
+
+
+            //Task_Bouncer 
+            Task.Run(() => { InviteGuest(); bounce.Bouncer_GaDirektHemMethod(); });
+
+            //Task_Guest
+            Task.Run(() =>
+            {
+                g.KommerInIPubMetod();
+
+                g.LetarLedigStolMetod();
+
+                g.SatterSigNedMetod();
+
+                g.DrickaOlLamnaBarMetod();
+
+
+            });
+
+            //Task_Bartender 
+            Task.Run(() =>
+            {
+                b.VantaiBarMetod();
+
+                b.PlockaGlasFranHyllaMetod();
+
+                b.HallaUppOlMetod();
+
+                b.BartenderGarHemMetod();
+
+            });
+
+
+            //Task_Waiter 
+            Task.Run(() =>
+            {
+                w.PlockarTommaGlasMetod();
+
+                w.DiskarGlasMetod();
+
+                w.StallarGlasIHyllaMetod();
+
+            });
+
+            
+            
+
+        }//method TheBar ends here!!
+
+
+
+
+
         public void Bartender_BarenOppnas()
-        { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbBartender.Items.Add(timeStamp + "_Baren öppnas!!"); }); }
+        {
+            String timeStamp = GetTimestamp(DateTime.Now); timeStamp += "_Baren öppnas!!";
+             Dispatcher.Invoke(() => { lstbBartender.Items.Insert(0, timeStamp); });  //Jari: Förslag på ny design, insert accepterade inte att man stoppa in datetime-objektet direkt i strängdelen som man kunde göra med add som du kan se nedan.
+        }  
+        
+       public void Bartender_BarenStangs()
+        { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbBartender.Items.Add(timeStamp + "_Baren stängs!!"); }); }
 
         public void Bartender_VantaIBaren()
         { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbBartender.Items.Add(timeStamp + "_Väntar i baren"); }); }
@@ -102,6 +193,10 @@ namespace Labb_6
         public void Waiter_BarenOppnas()
         { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbServitor.Items.Add(timeStamp + "_Baren öppnas!!"); }); }
 
+        public void Waiter_BarenStangs()
+        { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbServitor.Items.Add(timeStamp + "_Baren stängs!!"); }); }
+
+
         public void Waiter_PlockaTommaGlas()
         { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbServitor.Items.Add(timeStamp + "_Plockar upp tomma glas'"); }); }
 
@@ -111,13 +206,16 @@ namespace Labb_6
         public void Waiter_StallerGlasIHyllan()
         { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbServitor.Items.Add(timeStamp + "_Ställer glas i hyllan"); }); }
 
-        //Utskrifts-metoder för Bouncer
+        //Utskrifts-metoder för Bouncer 
         public void Bouncer_GarDirektHem()
-        { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbGaster.Items.Add(timeStamp + "_GarDirektHem"); }); }
+        { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbGaster.Items.Add(timeStamp + "_Går direkt hem"); }); }
 
         //Utskrifts-metoder för Guest
         public void Guest_BarenOppnas()
         { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbGaster.Items.Add(timeStamp + "_Baren öppnas!!"); }); }
+
+        public void Guest_BarenStrangs()
+        { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbGaster.Items.Add(timeStamp + "_Baren stängs!!"); }); }
 
         public void Guest_KommerInIPub()
         { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbGaster.Items.Add(timeStamp + "_Kommer in i puben"); }); }
@@ -155,8 +253,8 @@ namespace Labb_6
             Task t1 = Task.Run(() =>
             {
                 //int actionCount = 0; 
-                bool pubOpen = true;
-                while (pubOpen)
+                //bool pubOpen = true;
+                while (barOpen)
                 {
                     Random timeRandom = new Random();
                     String timeStamp = GetTimestamp(DateTime.Now);
@@ -173,13 +271,10 @@ namespace Labb_6
 
         private void btnOpenCloseBar_Click(object sender, RoutedEventArgs e)
         {
-
-           StartBar();
-           InviteGuest();
-            
-            
-
-
+            //STARTAR OCH STOPPAR PROGRAMMET OCH BAREN!!!!!!!!!!  :D
+            barOpen = !barOpen;
+            TheBar();
+           
         }
 
 
@@ -197,8 +292,9 @@ namespace Labb_6
     {
         public event Action GaDirektHem;
 
-        public void DoSomethingMethodBouncer()
-        { Task.Run(() => { GaDirektHem?.Invoke(); }); }
+        public void Bouncer_GaDirektHemMethod() {  GaDirektHem?.Invoke(); }
+
+        //Jari:  iom dessa klasser anropas från main via varsin respektive task så ingår ju redan de här metoderna i de trådarna som jag anser det.  de triggar ju vad som sedan via ovanstående utskriftsmetoder blir själva callback:et.  så om den tolkningen är rätt så blir det ju meninglösa att se de här metoderna i en task...när de redan är del av den iom anropen och deras triggning tillbaka till respektiva tråd i respektive task.  ällä???   låtar dem vara så länge iaf.   kanske itne ens går att dynga dit en task i varje klass här??
 
 
     }
@@ -207,50 +303,38 @@ namespace Labb_6
 
     public class Guest
     {
+        public event Action KommerInIPub, LetarLedigStol, SatterSigNed, DrickaOlLamnaBar, BarenOppnas, BarenStangs;
 
-       public event Action KommerInIPub, LetarLedigStol, SatterSigNed, DrickaOlLamnaBar, BarenOppnas;
+        public void Guest_BarenOppnasMetod() { BarenOppnas?.Invoke(); }
+          
+        public void Guest_BarenStangsMetod() { BarenStangs?.Invoke();  }
 
-        public void Guest_BarenOppnasMetod()
-        { Task.Run(() => { BarenOppnas?.Invoke(); }); }
+        public void KommerInIPubMetod() { KommerInIPub?.Invoke(); }
 
-        public void KommerInIPubMetod()
-        { Task.Run(() => { KommerInIPub?.Invoke(); }); }
+        public void LetarLedigStolMetod() { LetarLedigStol?.Invoke(); }
 
-        public void LetarLedigStolMetod()
-        { Task.Run(() => { LetarLedigStol?.Invoke(); }); }
+        public void SatterSigNedMetod() { SatterSigNed?.Invoke(); }
 
-        public void SatterSigNedMetod()
-        { Task.Run(() => { SatterSigNed?.Invoke(); }); }
+        public void DrickaOlLamnaBarMetod() { DrickaOlLamnaBar?.Invoke(); }
 
-        public void DrickaOlLamnaBarMetod()
-        { Task.Run(() => { DrickaOlLamnaBar?.Invoke(); }); }
-
-        //utskrifts-callback till motsvarande listbox
-    }
+     }
 
 
     public class Bartender
     {
-        //utskrifts-callback till motsvarande listbox
-    
-        //public event Action Run, Roar; 
+        public event Action VantaiBar, PlockaGlasFranHylla, HallaUppOl, BartenderGarHem, BarenOppnas, BarenStangs;
 
-        public event Action VantaiBar, PlockaGlasFranHylla, HallaUppOl, BartenderGarHem, BarenOppnas;
+        public void Bartender_BarenOppnasMetod() { BarenOppnas?.Invoke(); }
 
-        public void Bartender_BarenOppnasMetod()
-        { Task.Run(() => { BarenOppnas?.Invoke(); }); }
+        public void Bartender_BarenStangsMetod() { BarenStangs?.Invoke(); }
 
-        public void VantaiBarMetod()
-        { Task.Run(() => { VantaiBar?.Invoke(); }); }
+        public void VantaiBarMetod() { VantaiBar?.Invoke(); }
 
-        public void PlockaGlasFranHyllaMetod()
-        { Task.Run(() => { PlockaGlasFranHylla?.Invoke(); }); }
+        public void PlockaGlasFranHyllaMetod() { PlockaGlasFranHylla?.Invoke(); }
 
-        public void HallaUppOlMetod()
-        { Task.Run(() => { HallaUppOl?.Invoke(); }); }
+        public void HallaUppOlMetod() { HallaUppOl?.Invoke(); }
 
-        public void BartenderGarHemMetod()
-        { Task.Run(() => { BartenderGarHem?.Invoke(); }); }
+        public void BartenderGarHemMetod() { BartenderGarHem?.Invoke(); }
 
 
 
@@ -265,24 +349,29 @@ namespace Labb_6
     public class Waiter
     {
 
-        public event Action PlockarTommaGlas, DiskarGlas, StallarGlasIHylla, BarenOppnas;
+        public event Action PlockarTommaGlas, DiskarGlas, StallarGlasIHylla, BarenOppnas, BarenStangs;
 
-        public void Waiter_BarenOppnasMetod()
-        { Task.Run(() => { BarenOppnas?.Invoke(); }); }
+        public void Waiter_BarenOppnasMetod() { BarenOppnas?.Invoke(); }
 
-        public void PlockarTommaGlasMetod()
-        { Task.Run(() => { PlockarTommaGlas?.Invoke(); }); }
+        public void Waiter_BarenStangsMetod() { BarenStangs?.Invoke(); }
 
-        public void DiskarGlasMetod()
-        { Task.Run(() => { DiskarGlas?.Invoke(); }); }
+        public void PlockarTommaGlasMetod() { PlockarTommaGlas?.Invoke(); }
 
-        public void StallarGlasIHyllaMetod()
-        { Task.Run(() => { StallarGlasIHylla?.Invoke(); }); }
+        public void DiskarGlasMetod() { DiskarGlas?.Invoke(); }
 
-        //utskrifts-callback till motsvarande listbox
+        public void StallarGlasIHyllaMetod() { StallarGlasIHylla?.Invoke(); }
+
     }
+
 
     
 
 
+    
+
+
+
+
+
 } //EOF
+    
