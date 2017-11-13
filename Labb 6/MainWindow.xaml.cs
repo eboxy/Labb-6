@@ -90,7 +90,22 @@ namespace Labb_6
             w.StallarGlasIHylla += Waiter_StallerGlasIHyllan;
 
 
+            
+            
+            //Tids-egenskapar sätts in till respektive labels
+            w.AntalStolar = 2; //fejk-värde så länge.
+            Dispatcher.Invoke(() => { lblAntalLedigaStolar.Content = "Antal lediga stolar " + w.AntalStolar; });
 
+            b.AntalGlas = 2; //fejk-värde så länge.
+            Dispatcher.Invoke(() => { lblAntalGlasIHylla.Content = "Antal glas i hyllan " + b.AntalGlas; });
+
+            g.AntalGaster = 2; //fejk-värde så länge.
+            Dispatcher.Invoke(() => { lblAntalGasterIBaren.Content = "Antal gäster i bar " + g.AntalGaster; });
+
+
+
+            
+            
             //Tasks
 
             //Task_Bar öppnas och stängs
@@ -99,6 +114,7 @@ namespace Labb_6
 
                 if (barOpen)
                 {
+                    BarCountDown();  //barens öppettid: 120s.
                     b.Bartender_BarenOppnasMetod();
                     g.Guest_BarenOppnasMetod();
                     w.Waiter_BarenOppnasMetod();
@@ -162,6 +178,24 @@ namespace Labb_6
             
 
         }//method TheBar ends here!!
+
+
+        //Nedräkningsmetod för barens öppettid: 120 sek (2min)
+        public void BarCountDown()
+        {
+            int backwardnumber = 0;   // skall vara global?
+
+            for (backwardnumber = 120; backwardnumber >= 0; backwardnumber--)
+            {
+                Dispatcher.Invoke(() => { lblCountDown.Content= backwardnumber; });
+                Thread.Sleep(1000);
+            }
+        }
+            
+        
+
+
+
 
 
 
@@ -269,12 +303,16 @@ namespace Labb_6
 
         }
 
+
+        //barens startknapp :D
         private void btnOpenCloseBar_Click(object sender, RoutedEventArgs e)
         {
             //STARTAR OCH STOPPAR PROGRAMMET OCH BAREN!!!!!!!!!!  :D
             barOpen = !barOpen;
             TheBar();
-           
+            
+
+
         }
 
 
@@ -292,6 +330,8 @@ namespace Labb_6
     {
         public event Action GaDirektHem;
 
+        private int slappaInGastTid = 0; public int SlappaInGastTid { get; set; }  //(3-10s) 
+
         public void Bouncer_GaDirektHemMethod() {  GaDirektHem?.Invoke(); }
 
         //Jari:  iom dessa klasser anropas från main via varsin respektive task så ingår ju redan de här metoderna i de trådarna som jag anser det.  de triggar ju vad som sedan via ovanstående utskriftsmetoder blir själva callback:et.  så om den tolkningen är rätt så blir det ju meninglösa att se de här metoderna i en task...när de redan är del av den iom anropen och deras triggning tillbaka till respektiva tråd i respektive task.  ällä???   låtar dem vara så länge iaf.   kanske itne ens går att dynga dit en task i varje klass här??
@@ -304,6 +344,14 @@ namespace Labb_6
     public class Guest
     {
         public event Action KommerInIPub, LetarLedigStol, SatterSigNed, DrickaOlLamnaBar, BarenOppnas, BarenStangs;
+
+        private int antalGaster = 0; public int AntalGaster { get; set; }  //gäster-räknare. skall vara global?
+
+        private int kommaTillBarenTid = 0;  public int KommaTillBarenTid { get; set; }  //(1s)
+
+        private int gaTillStolTid = 0; public int GaTillStolTid { get; set; }  //(4s)
+
+        private int drickaOlTid = 0; public int DrickaOlTid { get; set; }  //(10-20s) 
 
         public void Guest_BarenOppnasMetod() { BarenOppnas?.Invoke(); }
           
@@ -324,6 +372,12 @@ namespace Labb_6
     {
         public event Action VantaiBar, PlockaGlasFranHylla, HallaUppOl, BartenderGarHem, BarenOppnas, BarenStangs;
 
+        private int antalGlas = 0; public int AntalGlas { get; set; }  //skall vara global??
+
+        private int hamtaGlasTid = 0; public int HamtaGlasTid { get; set; } //(3s)
+
+        private int hallaOlTid = 0;  public int HallaOlTid { get; set; }  //(3s)
+        
         public void Bartender_BarenOppnasMetod() { BarenOppnas?.Invoke(); }
 
         public void Bartender_BarenStangsMetod() { BarenStangs?.Invoke(); }
@@ -350,6 +404,12 @@ namespace Labb_6
     {
 
         public event Action PlockarTommaGlas, DiskarGlas, StallarGlasIHylla, BarenOppnas, BarenStangs;
+
+        private int antalStolar = 0; public int AntalStolar { get; set; }  //skall vara global??
+
+        private int plockaTommaGlasTid = 0; public int PlockaTommaGlasTid { get; set; }  //(10s)  
+
+        private int diskaGlasTid = 0; public int DiskaGlasTid { get; set; }   //(15s)
 
         public void Waiter_BarenOppnasMetod() { BarenOppnas?.Invoke(); }
 
