@@ -205,63 +205,114 @@ namespace Labb_6
         {
             String timeStamp = GetTimestamp(DateTime.Now); timeStamp += "_Baren öppnas!!";
              Dispatcher.Invoke(() => { lstbBartender.Items.Insert(0, timeStamp); });  //Jari: Förslag på ny design, insert accepterade inte att man stoppa in datetime-objektet direkt i strängdelen som man kunde göra med add som du kan se nedan.
-        }  
-        
-       public void Bartender_BarenStangs()
-        { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbBartender.Items.Add(timeStamp + "_Baren stängs!!"); }); }
+        }
+
+        public void Bartender_BarenStangs()
+        {
+            String timeStamp = GetTimestamp(DateTime.Now); timeStamp += "_Baren stängs!!";
+            Dispatcher.Invoke(() => { lstbBartender.Items.Insert(0, timeStamp); });
+        }
 
         public void Bartender_VantaIBaren()
-        { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbBartender.Items.Add(timeStamp + "_Väntar i baren"); }); }
+        {
+            String timeStamp = GetTimestamp(DateTime.Now); timeStamp += "_Väntar i baren";
+            Dispatcher.Invoke(() => { lstbBartender.Items.Insert(0, timeStamp); });
+        }
 
         public void Bartender_PlockaGlasFranHyllan()
-        { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbBartender.Items.Add(timeStamp + "_Plockar fram glas från hyllan'"); }); }
+        {
+            String timeStamp = GetTimestamp(DateTime.Now); timeStamp += "_Plockar fram glas från hyllan";
+            Dispatcher.Invoke(() => { lstbBartender.Items.Insert(0, timeStamp); });
+        }
 
         public void Bartender_HallaUppOl()
-        { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbBartender.Items.Add(timeStamp + "_Häller upp öl till kund"); }); }
+        {
+            String timeStamp = GetTimestamp(DateTime.Now); timeStamp += "_Häller upp öl till kund";
+            Dispatcher.Invoke(() => { lstbBartender.Items.Insert(0, timeStamp); });
+        }
 
         public void Bartender_GarHem()
-        { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbBartender.Items.Add(timeStamp + "_Går hem!!"); }); }
+        {
+            String timeStamp = GetTimestamp(DateTime.Now); timeStamp += "_Går hem!!";
+            Dispatcher.Invoke(() => { lstbBartender.Items.Insert(0, timeStamp); });
+        }
 
 
         //Utskrifts-metoder för Waiter
         public void Waiter_BarenOppnas()
-        { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbServitor.Items.Add(timeStamp + "_Baren öppnas!!"); }); }
+        {
+            String timeStamp = GetTimestamp(DateTime.Now); timeStamp += "_Baren öppnas!!";
+            Dispatcher.Invoke(() => { lstbServitor.Items.Insert(0, timeStamp); });
+        }
 
         public void Waiter_BarenStangs()
-        { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbServitor.Items.Add(timeStamp + "_Baren stängs!!"); }); }
+        {
+            String timeStamp = GetTimestamp(DateTime.Now); timeStamp += "_Baren stängs!!";
+            Dispatcher.Invoke(() => { lstbServitor.Items.Insert(0, timeStamp); });
+        }
 
 
         public void Waiter_PlockaTommaGlas()
-        { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbServitor.Items.Add(timeStamp + "_Plockar upp tomma glas'"); }); }
+        {
+            String timeStamp = GetTimestamp(DateTime.Now); timeStamp += "_Plockar upp tomma glas'";
+            Dispatcher.Invoke(() => { lstbServitor.Items.Insert(0, timeStamp); });
+        }
 
         public void Waiter_DiskarGlas()
-        { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbServitor.Items.Add(timeStamp + "_Diskar glas"); }); }
+        {
+            String timeStamp = GetTimestamp(DateTime.Now); timeStamp += "_Diskar glas";
+            Dispatcher.Invoke(() => { lstbServitor.Items.Insert(0, timeStamp); });
+        }
 
         public void Waiter_StallerGlasIHyllan()
-        { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbServitor.Items.Add(timeStamp + "_Ställer glas i hyllan"); }); }
+        {
+            String timeStamp = GetTimestamp(DateTime.Now); timeStamp += "_Ställer glas i hyllan";
+            Dispatcher.Invoke(() => { lstbServitor.Items.Insert(0, timeStamp); });
+        }
 
         //Utskrifts-metoder för Bouncer 
         public void Bouncer_GarDirektHem()
-        { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbGaster.Items.Add(timeStamp + "_Går direkt hem"); }); }
+        {
+            String timeStamp = GetTimestamp(DateTime.Now); timeStamp += "_Går direkt hem";
+            Dispatcher.Invoke(() => { lstbGaster.Items.Insert(0, timeStamp); });
+        }
 
         //Utskrifts-metoder för Guest
         public void Guest_BarenOppnas()
-        { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbGaster.Items.Add(timeStamp + "_Baren öppnas!!"); }); }
+        {
+            String timeStamp = GetTimestamp(DateTime.Now); timeStamp += "_Baren öppnas!!";
+            Dispatcher.Invoke(() => { lstbGaster.Items.Insert(0, timeStamp); });
+        }
 
         public void Guest_BarenStrangs()
-        { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbGaster.Items.Add(timeStamp + "_Baren stängs!!"); }); }
+        {
+            String timeStamp = GetTimestamp(DateTime.Now); timeStamp += "_Baren stängs!!";
+            Dispatcher.Invoke(() => { lstbGaster.Items.Insert(0, timeStamp); });
+        }
 
         public void Guest_KommerInIPub()
-        { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbGaster.Items.Add(timeStamp + "_Kommer in i puben"); }); }
+        {
+            String timeStamp = GetTimestamp(DateTime.Now); timeStamp += "_Kommer in i puben";
+            Dispatcher.Invoke(() => { lstbGaster.Items.Insert(0, timeStamp); });
+        }
 
         public void Guest_LetarEfterLedigStrol()
-        { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbGaster.Items.Add(timeStamp + "_Letar efter ledig stol"); }); }
+        {
+            String timeStamp = GetTimestamp(DateTime.Now); timeStamp += "_Letar efter ledig stol";
+            Dispatcher.Invoke(() => { lstbGaster.Items.Insert(0, timeStamp); });
+        }
 
         public void Guest_SattSigNer()
-        { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbGaster.Items.Add(timeStamp + "_Sätter sig ned på stol"); }); }
+        {
+            String timeStamp = GetTimestamp(DateTime.Now); timeStamp += "_Sätter sig ned på stol";
+            Dispatcher.Invoke(() => { lstbGaster.Items.Insert(0, timeStamp); });
+        }
 
         public void Guest_DrickerOlGarHem()
-        { String timeStamp = GetTimestamp(DateTime.Now); Dispatcher.Invoke(() => { lstbGaster.Items.Add(timeStamp + "_Dricker ur ölen och går hem!!"); }); }
+        {
+            String timeStamp = GetTimestamp(DateTime.Now); timeStamp += "_Dricker ur ölen och går hem!!";
+            Dispatcher.Invoke(() => { lstbGaster.Items.Insert(0, timeStamp); });
+        }
 
 
         //hade en version förut där man bara skicka ett värde men då blev det massa text i anropen och rördigt när metoderna skulle prenumerera på en händelse samt metoderna fick ja ha ett generiskt namn för aktuell agent. så blir fulare å klumpigare här bland utskrifterna men tror det blirn bättre sedan vid anropen etc.  något att tänka på men gör så här så länge. annars är det ju ett solklart fall av att brya ner i metod!!!
