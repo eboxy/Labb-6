@@ -50,8 +50,14 @@ namespace Labb_6
         Guest g = new Guest();
         Waiter w = new Waiter();
 
+        //Collections
+        ConcurrentStack<Glass> GlassStack = new ConcurrentStack<Glass>();
+        BlockingCollection<Stolar> StolarBlockingColl = new BlockingCollection<Stolar>();
+        ConcurrentQueue<Guest> GästKo = new ConcurrentQueue<Guest>();
 
 
+
+        
         
         public void TheBar()
         {
@@ -377,7 +383,25 @@ namespace Labb_6
 
     // OTHER CLASSES HERE:
 
-    public class Bouncer
+
+    public class Stolar
+    {
+        private int antalStolar = 0; public int AntalStolar { get; set; }  //skall vara global??     
+    }
+
+
+    public class Glass
+    {
+        private string cleanGlass = ""; public string CleanGlass { get; set; }
+
+        private int antalGlas = 0; public int AntalGlas { get; set; }  //skall vara global??
+        }
+
+
+
+
+
+        public class Bouncer
     {
         public event Action GaDirektHem;
 
@@ -423,8 +447,6 @@ namespace Labb_6
     {
         public event Action VantaiBar, PlockaGlasFranHylla, HallaUppOl, BartenderGarHem, BarenOppnas, BarenStangs;
 
-        private int antalGlas = 0; public int AntalGlas { get; set; }  //skall vara global??
-
         private int hamtaGlasTid = 0; public int HamtaGlasTid { get; set; } //(3s)
 
         private int hallaOlTid = 0;  public int HallaOlTid { get; set; }  //(3s)
@@ -455,8 +477,6 @@ namespace Labb_6
     {
 
         public event Action PlockarTommaGlas, DiskarGlas, StallarGlasIHylla, BarenOppnas, BarenStangs;
-
-        private int antalStolar = 0; public int AntalStolar { get; set; }  //skall vara global??
 
         private int plockaTommaGlasTid = 0; public int PlockaTommaGlasTid { get; set; }  //(10s)  
 
