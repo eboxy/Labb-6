@@ -47,7 +47,7 @@ namespace Labb_6
         //Agenter
         Bouncer bounce = new Bouncer();
         Bartender b = new Bartender();
-        Guest g = new Guest();
+        Guest g = new Guest("");
         Waiter w = new Waiter();
 
         //Collections
@@ -79,7 +79,7 @@ namespace Labb_6
             bounce.GaDirektHem += Bouncer_GarDirektHem;
 
             //Guest events och prunumerationer
-            g.KommerInIPub += Guest_KommerInIPub;
+            //g.KommerInIPub += Guest_KommerInIPub;
             g.LetarLedigStol += Guest_LetarEfterLedigStrol;
             g.SatterSigNed += Guest_SattSigNer;
             g.DrickaOlLamnaBar += Guest_DrickerOlGarHem;
@@ -98,15 +98,15 @@ namespace Labb_6
 
             
             
-            //Tids-egenskapar sätts in till respektive labels
-            w.AntalStolar = 2; //fejk-värde så länge.
-            Dispatcher.Invoke(() => { lblAntalLedigaStolar.Content = "Antal lediga stolar " + w.AntalStolar; });
+            ////Tids-egenskapar sätts in till respektive labels
+            //w.AntalStolar = 2; //fejk-värde så länge.
+            //Dispatcher.Invoke(() => { lblAntalLedigaStolar.Content = "Antal lediga stolar " + w.AntalStolar; });
 
-            b.AntalGlas = 2; //fejk-värde så länge.
-            Dispatcher.Invoke(() => { lblAntalGlasIHylla.Content = "Antal glas i hyllan " + b.AntalGlas; });
+            //b.AntalGlas = 2; //fejk-värde så länge.
+            //Dispatcher.Invoke(() => { lblAntalGlasIHylla.Content = "Antal glas i hyllan " + b.AntalGlas; });
 
-            g.AntalGaster = 2; //fejk-värde så länge.
-            Dispatcher.Invoke(() => { lblAntalGasterIBaren.Content = "Antal gäster i bar " + g.AntalGaster; });
+            //g.AntalGaster = 2; //fejk-värde så länge.
+            //Dispatcher.Invoke(() => { lblAntalGasterIBaren.Content = "Antal gäster i bar " + g.AntalGaster; });
 
 
 
@@ -139,7 +139,11 @@ namespace Labb_6
 
 
             //Task_Bouncer 
-            Task.Run(() => { InviteGuest(); bounce.Bouncer_GaDirektHemMethod(); });
+            Task.Run(() =>
+            {
+                bounce.Bouncer_GaDirektHemMethod();
+                bounce.InviteGuest(Guest_KommerInIPub);
+            });
 
             //Task_Guest
             Task.Run(() =>
@@ -296,9 +300,9 @@ namespace Labb_6
             Dispatcher.Invoke(() => { lstbGaster.Items.Insert(0, timeStamp); });
         }
 
-        public void Guest_KommerInIPub()
+        public void Guest_KommerInIPub(string callback)
         {
-            String timeStamp = GetTimestamp(DateTime.Now); timeStamp += "_Kommer in i puben";
+            String timeStamp = GetTimestamp(DateTime.Now); timeStamp += callback + "_Kommer in i puben";
             Dispatcher.Invoke(() => { lstbGaster.Items.Insert(0, timeStamp); });
         }
 
@@ -326,39 +330,39 @@ namespace Labb_6
 
 
 
-        public void InviteGuest()
-        {
-            //Bouncer
-            //Inkastaren släpper in kunder slumpvis, efter tre till tio sekunder. Inkastaren kontrollerar leg, så att alla i baren kan veta vad kunden heter. (Slumpa ett namn åt nya kunder från en lista) Inkastaren slutar släppa in nya kunder när baren stänger och går hem direkt.
+        //public void InviteGuest()
+        //{
+        //    //Bouncer
+        //    //Inkastaren släpper in kunder slumpvis, efter tre till tio sekunder. Inkastaren kontrollerar leg, så att alla i baren kan veta vad kunden heter. (Slumpa ett namn åt nya kunder från en lista) Inkastaren slutar släppa in nya kunder när baren stänger och går hem direkt.
 
-            _theNames.Add("Izola ");
-            _theNames.Add("Jeane");
-            _theNames.Add("Christiane");
-            _theNames.Add("Taneka");
-            _theNames.Add("Debbra");
-            _theNames.Add("Terrilyn");
-            _theNames.Add("Fransisca");
-            _theNames.Add("Zetta");
-            _theNames.Add("Zina");
+        //    _theNames.Add("Izola ");
+        //    _theNames.Add("Jeane");
+        //    _theNames.Add("Christiane");
+        //    _theNames.Add("Taneka");
+        //    _theNames.Add("Debbra");
+        //    _theNames.Add("Terrilyn");
+        //    _theNames.Add("Fransisca");
+        //    _theNames.Add("Zetta");
+        //    _theNames.Add("Zina");
 
-            Task t1 = Task.Run(() =>
-            {
-                //int actionCount = 0; 
-                //bool pubOpen = true;
-                while (barOpen)
-                {
-                    Random timeRandom = new Random();
-                    String timeStamp = GetTimestamp(DateTime.Now);
-                    Thread.Sleep(timeRandom.Next(3000,10000));
-                    Dispatcher.Invoke(() =>
-                    {
-                        int r = timeRandom.Next(_theNames.Count);
-                        lstbGaster.Items.Insert(0,timeStamp + " " +_theNames.ElementAt(r) + " kommer in i baren.");
-                    });
-                }
-            });
+        //    Task t1 = Task.Run(() =>
+        //    {
+        //        //int actionCount = 0; 
+        //        //bool pubOpen = true;
+        //        while (barOpen)
+        //        {
+        //            Random timeRandom = new Random();
+        //            String timeStamp = GetTimestamp(DateTime.Now);
+        //            Thread.Sleep(timeRandom.Next(3000,10000));
+        //            Dispatcher.Invoke(() =>
+        //            {
+        //                int r = timeRandom.Next(_theNames.Count);
+        //                lstbGaster.Items.Insert(0,timeStamp + " " +_theNames.ElementAt(r) + " kommer in i baren.");
+        //            });
+        //        }
+        //    });
 
-        }
+        //}
 
 
         //barens startknapp :D
@@ -401,23 +405,69 @@ namespace Labb_6
 
 
 
-        public class Bouncer
+    public class Bouncer
     {
+        public Action<string> CallBack;
+        //public Action<Guest> CallGuest;
+
+        public void InviteGuest(Action<string> callback)
+        {
+            //Bouncer
+            //Inkastaren släpper in kunder slumpvis, efter tre till tio sekunder. Inkastaren kontrollerar leg, så att alla i baren kan veta vad kunden heter. (Slumpa ett namn åt nya kunder från en lista) Inkastaren slutar släppa in nya kunder när baren stänger och går hem direkt.
+
+            CallBack = callback;
+            //CallGuest = callGuest;
+
+            List<string> _listOfGuests = new List<string>
+            {
+                "Izola",
+                "Jeane",
+                "Christiane",
+                "Taneka",
+                "Debbra",
+                "Terrilyn",
+                "Fransisca",
+                "Zetta",
+                "Zina"
+            };
+
+
+            Task t1 = Task.Run(() =>
+            {
+                //int actionCount = 0; 
+                //bool pubOpen = true;
+                while (true)
+                {
+                    Random timeRandom = new Random();
+                    //String timeStamp = GetTimestamp(DateTime.Now);
+                    Thread.Sleep(timeRandom.Next(3000, 10000));
+                    int r = timeRandom.Next(_listOfGuests.Count);
+                    string nameOfGuest = _listOfGuests[r];
+                    callback($"{nameOfGuest}");
+                    //callGuest(new Guest(nameOfGuest));
+                }
+            });
+        }
+
         public event Action GaDirektHem;
 
-        private int slappaInGastTid = 0; public int SlappaInGastTid { get; set; }  //(3-10s) 
+        private int slappaInGastTid = 0;
+        public int SlappaInGastTid { get; set; } //(3-10s) 
 
-        public void Bouncer_GaDirektHemMethod() {  GaDirektHem?.Invoke(); }
-
-        //Jari:  iom dessa klasser anropas från main via varsin respektive task så ingår ju redan de här metoderna i de trådarna som jag anser det.  de triggar ju vad som sedan via ovanstående utskriftsmetoder blir själva callback:et.  så om den tolkningen är rätt så blir det ju meninglösa att se de här metoderna i en task...när de redan är del av den iom anropen och deras triggning tillbaka till respektiva tråd i respektive task.  ällä???   låtar dem vara så länge iaf.   kanske itne ens går att dynga dit en task i varje klass här??
-
-
+        public void Bouncer_GaDirektHemMethod()
+        {
+            GaDirektHem?.Invoke();
+        }
     }
-
 
 
     public class Guest
     {
+        public string Name { get; set; }
+        public Guest(string name)
+        {
+            Name = name;
+        }
         public event Action KommerInIPub, LetarLedigStol, SatterSigNed, DrickaOlLamnaBar, BarenOppnas, BarenStangs;
 
         private int antalGaster = 0; public int AntalGaster { get; set; }  //gäster-räknare. skall vara global?
