@@ -46,6 +46,35 @@ namespace Labb_6
         Guest g = new Guest("");
         Waiter w = new Waiter();
 
+        //Check if bartenderworks
+        public bool BartenderPause = true;
+
+
+        //Queues
+        ConcurrentStack<Glass> glasstack = new ConcurrentStack<Glass>();
+        ConcurrentStack<Chair> chairStack = new ConcurrentStack<Chair>();
+        ConcurrentQueue<Guest> guestQueue = new ConcurrentQueue<Guest>();
+
+        //Create Glasstack
+        private void CreateAGlass()
+        {
+            Task.Run(() => {
+                for (int i = 0; i < 8; i++)
+                {
+                    glasstack.Push(new Glass());
+                }
+            });
+        }
+
+        private void CreateAChair()
+        {
+            Task.Run(() => {
+                for (int i = 0; i < 8; i++)
+                {
+                    chairStack.Push(new Chair());
+                }
+            });
+        }
 
         public void TheBar()
         {
@@ -67,14 +96,14 @@ namespace Labb_6
 
             //Guest events och prunumerationer
             //g.KommerInIPub += Guest_KommerInIPub;
-            g.LetarLedigStol += Guest_LetarEfterLedigStrol;
-            g.SatterSigNed += Guest_SattSigNer;
-            g.DrickaOlLamnaBar += Guest_DrickerOlGarHem;
+            //g.LetarLedigStol += Guest_LetarEfterLedigStrol;
+            //g.SatterSigNed += Guest_SattSigNer;
+            //g.DrickaOlLamnaBar += Guest_DrickerOlGarHem;
 
             //Bartender evetns och prenumerationer
-            b.VantaiBar += Bartender_VantaIBaren;
-            b.PlockaGlasFranHylla += Bartender_PlockaGlasFranHyllan;
-            b.HallaUppOl += Bartender_HallaUppOl;
+            //b.VantaiBar += Bartender_VantaIBaren;
+            //b.PlockaGlasFranHylla += Bartender_PlockaGlasFranHyllan;
+            //b.HallaUppOl += Bartender_HallaUppOl;
             b.BartenderGarHem += Bartender_GarHem;
 
             //Waiter events och prenumerationer
@@ -99,6 +128,8 @@ namespace Labb_6
             //Task_Bar öppnas och stängs
             Task.Run(() =>
             {
+                CreateAGlass();
+                CreateAChair();
                 if (barOpen)
                 {
                     BarCountDown(); //barens öppettid: 120s.
@@ -120,13 +151,14 @@ namespace Labb_6
             {
                 bounce.Bouncer_GaDirektHemMethod();
                 //Lägg in en till Action<Guest> CallGuest som param för kön.
-                bounce.InviteGuest(Guest_KommerInIPub);
+                bounce.InviteGuest(Guest_KommerInIPub, AddGuestToQueue);
             });
 
 
             //Task_Guest
             Task.Run(() =>
             {
+
                 g.KommerInIPubMetod();
 
                 g.LetarLedigStolMetod();
@@ -139,13 +171,14 @@ namespace Labb_6
             //Task_Bartender 
             Task.Run(() =>
             {
-                b.VantaiBarMetod();
+                b.Bartending(guestQueue, BartenderWork, glasstack, chairStack, BartenderPause);
+                //b.VantaiBarMetod();
 
-                b.PlockaGlasFranHyllaMetod();
+                //b.PlockaGlasFranHyllaMetod();
 
-                b.HallaUppOlMetod();
+                //b.HallaUppOlMetod();
 
-                b.BartenderGarHemMetod();
+                //b.BartenderGarHemMetod();
             });
 
 
@@ -173,6 +206,14 @@ namespace Labb_6
             }
         }
 
+        public void AddGuestToQueue(Guest guest)
+        {
+            Task.Run(() => {
+                guestQueue.Enqueue(guest);
+            });
+        }
+
+
 
         public void Bartender_BarenOppnas()
         {
@@ -191,26 +232,34 @@ namespace Labb_6
             Dispatcher.Invoke(() => { lstbBartender.Items.Insert(0, timeStamp); });
         }
 
-        public void Bartender_VantaIBaren()
+        public void BartenderWork(string whatBartenderDoes)
         {
             String timeStamp = GetTimestamp(DateTime.Now);
-            timeStamp += "_Väntar i baren";
-            Dispatcher.Invoke(() => { lstbBartender.Items.Insert(0, timeStamp); });
+            Dispatcher.Invoke(() =>
+            {
+                lstbBartender.Items.Insert(0, $"{timeStamp} " + whatBartenderDoes);
+            });
         }
+        //public void Bartender_VantaIBaren()
+        //{
+        //    String timeStamp = GetTimestamp(DateTime.Now);
+        //    timeStamp += "_Väntar i baren";
+        //    Dispatcher.Invoke(() => { lstbBartender.Items.Insert(0, timeStamp); });
+        //}
 
-        public void Bartender_PlockaGlasFranHyllan()
-        {
-            String timeStamp = GetTimestamp(DateTime.Now);
-            timeStamp += "_Plockar fram glas från hyllan";
-            Dispatcher.Invoke(() => { lstbBartender.Items.Insert(0, timeStamp); });
-        }
+        //public void Bartender_PlockaGlasFranHyllan(string reachglass)
+        //{
+        //    String timeStamp = GetTimestamp(DateTime.Now);
+        //    timeStamp += "_Plockar fram glas från hyllan";
+        //    Dispatcher.Invoke(() => { lstbBartender.Items.Insert(0, timeStamp); });
+        //}
 
-        public void Bartender_HallaUppOl()
-        {
-            String timeStamp = GetTimestamp(DateTime.Now);
-            timeStamp += "_Häller upp öl till kund";
-            Dispatcher.Invoke(() => { lstbBartender.Items.Insert(0, timeStamp); });
-        }
+        //public void Bartender_HallaUppOl(string pour)
+        //{
+        //    String timeStamp = GetTimestamp(DateTime.Now);
+        //    timeStamp += "_Häller upp öl till kund";
+        //    Dispatcher.Invoke(() => { lstbBartender.Items.Insert(0, timeStamp); });
+        //}
 
         public void Bartender_GarHem()
         {
@@ -287,21 +336,21 @@ namespace Labb_6
             Dispatcher.Invoke(() => { lstbGaster.Items.Insert(0, timeStamp); });
         }
 
-        public void Guest_LetarEfterLedigStrol()
+        public void Guest_LetarEfterLedigStrol(string chair)
         {
             String timeStamp = GetTimestamp(DateTime.Now);
             timeStamp += "_Letar efter ledig stol";
             Dispatcher.Invoke(() => { lstbGaster.Items.Insert(0, timeStamp); });
         }
 
-        public void Guest_SattSigNer()
+        public void Guest_SattSigNer(string sit)
         {
             String timeStamp = GetTimestamp(DateTime.Now);
             timeStamp += "_Sätter sig ned på stol";
             Dispatcher.Invoke(() => { lstbGaster.Items.Insert(0, timeStamp); });
         }
 
-        public void Guest_DrickerOlGarHem()
+        public void Guest_DrickerOlGarHem(string drick)
         {
             String timeStamp = GetTimestamp(DateTime.Now);
             timeStamp += "_Dricker ur ölen och går hem!!";
@@ -354,6 +403,11 @@ namespace Labb_6
             barOpen = !barOpen;
             TheBar();
         }
+
+        private void btnBartender_Click(object sender, RoutedEventArgs e)
+        {
+            BartenderPause = !BartenderPause;
+        }
     } //mainwindow class ends here
 
 
@@ -364,13 +418,13 @@ namespace Labb_6
         public Action<string> CallBack;
         public Action<Guest> CallGuest;
         //Lägg in en till Action<Guest> CallGuest som param för kön.
-        public void InviteGuest(Action<string> callback)
+        public void InviteGuest(Action<string> callback, Action<Guest> callGuest)
         {
             //Bouncer
             //Inkastaren släpper in kunder slumpvis, efter tre till tio sekunder. Inkastaren kontrollerar leg, så att alla i baren kan veta vad kunden heter. (Slumpa ett namn åt nya kunder från en lista) Inkastaren slutar släppa in nya kunder när baren stänger och går hem direkt.
 
             CallBack = callback;
-            //CallGuest = callGuest;
+            CallGuest = callGuest;
 
             List<string> _listOfGuests = new List<string>
             {
@@ -398,7 +452,7 @@ namespace Labb_6
                     int r = timeRandom.Next(_listOfGuests.Count);
                     string nameOfGuest = _listOfGuests[r];
                     callback($"{nameOfGuest}");
-                    //callGuest(new Guest(nameOfGuest));
+                    callGuest(new Guest(nameOfGuest));
                 }
             });
         }
@@ -475,6 +529,65 @@ public class Guest
 
 public class Bartender
 {
+    private Action<string> Callback;
+    private ConcurrentQueue<Guest> GuestQueue;
+    private ConcurrentStack<Glass> GlassStack;
+    private ConcurrentStack<Chair> ChairStack;
+
+
+    public void Bartending(ConcurrentQueue<Guest> guestQueue, Action<string> callback, ConcurrentStack<Glass> glassStack, ConcurrentStack<Chair> chairStack, bool barOpen)
+    {
+        Callback = callback;
+        GuestQueue = guestQueue;
+        GlassStack = glassStack;
+        ChairStack = chairStack;
+
+        Task.Run(() =>
+        {
+            while (barOpen) //Kommer att kolla om baren är öppen
+            {
+
+                Thread.Sleep(1000);
+
+                if (!guestQueue.IsEmpty)
+                {
+                    if (!glassStack.IsEmpty)
+
+
+                    {
+                        callback("Bartendern tar ett glas från glashyllan.");
+                        Thread.Sleep(3000);
+                        GlassStack.TryPop(out Glass glass);
+                        if (!chairStack.IsEmpty)
+                        {
+                            ChairStack.TryPop(out Chair chair);
+                            callback($"Bartendern häller upp en öl till {guestQueue.First().Name}.");
+                            Thread.Sleep(3000);
+                        }
+                        else
+                        {
+                            callback($"{guestQueue.First().Name}. väntar på en stol");
+                        }
+                        guestQueue.TryDequeue(out Guest guest);
+                    }
+
+
+                    else
+                    {
+                        callback("Bartendern väntar på glass");
+                    }
+
+
+
+
+                }
+                else
+                {
+                    callback("Bartendern löser sudoku medan han väntar på kunder.");
+                }
+            }
+        });
+    }
     public event Action VantaiBar, PlockaGlasFranHylla, HallaUppOl, BartenderGarHem, BarenOppnas, BarenStangs;
 
     private int antalGlas = 0;
@@ -520,6 +633,15 @@ public class Bartender
     //ingen task, metod som anropar häll upp öl osv. task i main dock!! (dave)  SKALL VI BAARA EN LR NÅGRA TASKS I MIAN DÅ OCH FRÅN DEN/DEMStrANROPA METODER                                                                           I KLASSER ETC???  JAG HAR DOCK GJORT  LITE TRÅDAR I VARJE KLASS. FÅR VÄL                                                                              ÄNDRA PÅ DET SEDAN ISF??
 }
 
+public class Glass
+{
+
+}
+
+public class Chair
+{
+
+}
 
 public class Waiter
 {
